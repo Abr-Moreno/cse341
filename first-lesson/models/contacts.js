@@ -21,7 +21,7 @@ const getContacts = async () => {
     .find({}) // The {} is an empty filter.
     .toArray();// find returns a cursor, converted to an array using toArray().
 
-  return result;
+  return collection;
 };
 
 const getContactById = async (id) => {
@@ -34,7 +34,7 @@ const getContactById = async (id) => {
     // Convert URL ID from string into MongoDB ObjectId for querying.
     .findOne({ _id: new ObjectId(id) }); // Find a single document by its _id.
 
-  return result;
+  return collection;
 };
 
 module.exports = {
