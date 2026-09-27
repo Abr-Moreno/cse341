@@ -1,0 +1,23 @@
+### LOCAL - Get ALL Contacts
+GET http://localhost:3000/contacts
+
+### LOCAL - Get 1st Contact by ID
+GET http://localhost:3000/contacts/6ab840d11dcf42c1c1bd85c9
+
+### LOCAL - Get 2nd Contact by ID
+GET http://localhost:3000/contacts/6ab842551dcf42c1c1bd85ce
+
+### Get 3rd Contact by ID
+GET http://localhost:3000/contacts/6ab843a21dcf42c1c1bd85cf
+
+### LIVE - Get ALL Contacts
+GET https://cse341-1st-lesson.onrender.com/contacts
+
+### LIVE - Get 1st Contact by ID
+GET https://cse341-1st-lesson.onrender.com/contacts/6ab840d11dcf42c1c1bd85c9
+
+### LIVE - Get 2nd Contact by ID
+GET https://cse341-1st-lesson.onrender.com/contacts/6ab842551dcf42c1c1bd85ce
+
+### LIVE - Get 3rd Contact by ID
+GET https://cse341-1st-lesson.onrender.com/contacts/6ab843a21dcf42c1c1bd85cf

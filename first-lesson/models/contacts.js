@@ -14,15 +14,12 @@ const getContacts = async () => {
   const client = mongoDb.getClient();
 
   // Selects the contactDb database and its contacts collection.
-  const collection = client
+  const collection = await client
     .db('contactsDb') // Use the 'contactsDb' database
-    .collection('contacts'); // Access the 'contacts' collection
-
-  // Retrieves all documents from the contacts collection and converts them to an array.
-  // Find documents in the collection without applying a filter.
-  // The {} is an empty filter.
-  // find returns a cursor, which we convert to an array using toArray().
-  const result = await collection.find({}).toArray();
+    .collection('contacts') // Access the 'contacts' collection
+    // Find documents in the collection without applying a filter.
+    .find({}) // The {} is an empty filter.
+    .toArray();// find returns a cursor, converted to an array using toArray().
 
   return result;
 };
@@ -31,15 +28,11 @@ const getContactById = async (id) => {
   // Gets the MongoDB client established in connect.js
   const client = mongoDb.getClient();
   // Selects the contactDb database and its contacts collection.
-  const collection = client
-    .db('contactsDb') // Use the 'contactsDb' database
-    .collection('contacts'); // Access the 'contacts' collection
-
-  // Conert URL ID from string into MongoDB ObjectId.
-  const objectId = new ObjectId(id);
-
-  // Find document _id that matches the ObjectId.
-  const result = await collection.findOne({ _id: objectId });
+  const collection = await client
+    .db('contactsDb')
+    .collection('contacts')
+    // Convert URL ID from string into MongoDB ObjectId for querying.
+    .findOne({ _id: new ObjectId(id) }); // Find a single document by its _id.
 
   return result;
 };
