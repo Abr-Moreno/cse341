@@ -8,11 +8,18 @@ const express = require('express');
 // Import the database connection module.
 const mongodb = require('./db/connect');
 
-// Import the router that handles requests to /contacts endpoint.
+// Import the 'configured' router to handle requests into /contacts endpoint.
 const contactsRoutes = require('./routes/contacts');
 
 // Creates the Express application through the express() function.
 const app = express();
+
+// Middleware to parse JSON bodies in requests:
+// req is the HTTP request object, data contained inside its body is JSON.
+// express.json() parses the JSON,
+// Express puts the resulting JS object on req.body,
+// JS code can now work with req.body
+app.use(express.json());
 
 // Route mounting: 
 // Requests beginning with /contacts are handled by contactsRoutes

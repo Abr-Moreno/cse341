@@ -7,8 +7,35 @@ GET http://localhost:3000/contacts/6ab840d11dcf42c1c1bd85c9
 ### LOCAL - Get 2nd Contact by ID
 GET http://localhost:3000/contacts/6ab842551dcf42c1c1bd85ce
 
-### Get 3rd Contact by ID
+### LOCAL - Get 3rd Contact by ID
 GET http://localhost:3000/contacts/6ab843a21dcf42c1c1bd85cf
+
+### LOCAL - POST - Creates a contact
+POST http://localhost:3000/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Fyodor",
+  "lastName": "Dostoevsky",
+  "email": "fd99@gmail.com",
+  "favoriteColor": "black",
+  "birthday": "1821-11-11"
+}
+
+### LOCAL - PUT - Updates a contact
+PUT http://localhost:3000/contacts/CONTACT-ID-HERE
+Content-Type: application/json
+
+{
+  "firstName": "Fyodor",
+  "lastName": "Dostoevsky",
+  "email": "updated@gmail.com",
+  "favoriteColor": "red",
+  "birthday": "1821-11-11"
+}
+
+### LOCAL - DELETE - Deletes a contact
+DELETE http://localhost:3000/contacts/CONTACT-ID-HERE
 
 ### LIVE - Get ALL Contacts
 GET https://cse341-1st-lesson.onrender.com/contacts
@@ -21,3 +48,30 @@ GET https://cse341-1st-lesson.onrender.com/contacts/6ab842551dcf42c1c1bd85ce
 
 ### LIVE - Get 3rd Contact by ID
 GET https://cse341-1st-lesson.onrender.com/contacts/6ab843a21dcf42c1c1bd85cf
+
+### LIVE - POST - Creates a contact
+POST https://cse341-1st-lesson.onrender.com/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Fyodor",
+  "lastName": "Dostoevsky",
+  "email": "fd99@gmail.com",
+  "favoriteColor": "black",
+  "birthday": "1821-11-11"
+}
+
+### LIVE - PUT - Updates a contact
+PUT https://cse341-1st-lesson.onrender.com/contacts/CONTACT-ID-HERE
+Content-Type: application/json
+
+{
+  "firstName": "Fyodor",
+  "lastName": "Dostoevsky",
+  "email": "updated@gmail.com",
+  "favoriteColor": "red",
+  "birthday": "1821-11-11"
+}
+
+### LIVE - DELETE - Deletes a contact
+DELETE https://cse341-1st-lesson.onrender.com/contacts/CONTACT-ID-HERE

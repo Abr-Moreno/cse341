@@ -1,7 +1,7 @@
 // MAIN IDEA:
 // ==========
-// How does my app retrieve data from the database?
-// =================================================
+// How does my app access and manipulate data in the db?
+// =====================================================
 
 // Import MongoDB connection module.
 const mongoDb = require('../db/connect');
@@ -37,7 +37,62 @@ const getContactById = async (id) => {
   return collection;
 };
 
+// POST: Create a new contact in the database.
+const createContact = async (contact) => {
+  // Get the existing MongoDB client connection.
+  const client = mongoDb.getClient();
+
+  // Access the contactsDb database, the contacts collection,
+  // and insert the new contact document.
+  const result = await client
+    .db('contactsDb')
+    .collection('contacts')
+    .insertOne(contact);
+
+  // Return the ID MongoDB generated for the new contact.
+  return result.insertedId;
+};
+
+
+// PUT: Update an existing contact in the database.
+const updateContact = async (id, contact) => {
+  // Get the existing MongoDB client connection.
+  const client = mongoDb.getClient();
+
+  // Find the contact by its MongoDB _id and replace it
+  // with the updated contact data.
+  const result = await client
+    .db('contactsDb')
+    .collection('contacts')
+    .replaceOne(
+      { _id: new ObjectId(id) },
+      contact
+    );
+
+  // Return MongoDB's result describing the update operation.
+  return result;
+};
+
+
+// DELETE: Delete a contact from the database.
+const deleteContact = async (id) => {
+  // Get the existing MongoDB client connection.
+  const client = mongoDb.getClient();
+
+  // Find the contact by its MongoDB _id and delete it.
+  const result = await client
+    .db('contactsDb')
+    .collection('contacts')
+    .deleteOne({ _id: new ObjectId(id) });
+
+  // Return MongoDB's result describing the delete operation.
+  return result;
+};
+
 module.exports = {
   getContacts,
   getContactById,
+  createContact,
+  updateContact,
+  deleteContact
 };
