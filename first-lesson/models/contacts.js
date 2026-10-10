@@ -92,9 +92,9 @@ const deleteContactM = async (id) => {
 };
 
 module.exports = {
-  getAllContacts: getAllContactsM,
-  getContactById: getContactByIdM,
-  createContact: createContactM,
-  updateContact: updateContactM,
-  deleteContact: deleteContactM
+  getAllContactsM,
+  getContactByIdM,
+  createContactM,
+  updateContactM,
+  deleteContactM
 };
