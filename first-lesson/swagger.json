@@ -97,29 +97,23 @@
           {
             "name": "body",
             "in": "body",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "firstName": {
-                  "type": "string",
-                  "example": "Jane"
+                  "example": "any"
                 },
                 "lastName": {
-                  "type": "string",
-                  "example": "Doe"
+                  "example": "any"
                 },
                 "email": {
-                  "type": "string",
-                  "example": "jane@example.com"
+                  "example": "any"
                 },
                 "favoriteColor": {
-                  "type": "string",
-                  "example": "Blue"
+                  "example": "any"
                 },
                 "birthday": {
-                  "type": "string",
-                  "example": "1995-06-15"
+                  "example": "any"
                 }
               }
             }
@@ -128,6 +122,9 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },

@@ -79,15 +79,30 @@ const createContact = async (req, res, next) => {
   }
 };
 
-
 // PUT - update an existing contact
 const updateContact = async (req, res, next) => {
   try {
     // Get the contact ID from the URL parameters.
     const id = req.params.id;
 
-    // Get the updated contact data from the request body.
-    const contact = req.body;
+    // Name the fields so swagger-autogen can detect them
+    const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+    // Validation: is any required field missing or empty?
+    if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+      return res.status(400).json({
+        error: 'All fields are required.',
+      });
+    }
+
+    // Create a contact object with the validated data
+    const contact = {
+      firstName,
+      lastName,
+      email,
+      favoriteColor,
+      birthday,
+    };
 
     // Pass the ID and updated data to the model to update MongoDB.
     await contactsModel.updateContactM(id, contact);
