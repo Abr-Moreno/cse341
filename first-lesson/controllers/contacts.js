@@ -6,10 +6,10 @@
 const contactsModel = require('../models/contacts');
 
 // GET all contacts
-const getData = async (req, res, next) => {
+const getAllContacts = async (req, res, next) => {
   try {
     // Retrieve all contacts.
-    const data = await contactsModel.getContacts();
+    const data = await contactsModel.getAllContactsM();
 
     // Send the contacts with a successful HTTP response.
     res.status(200).json(data);
@@ -19,12 +19,12 @@ const getData = async (req, res, next) => {
 };
 
 // GET a single contact by ID
-const getDataById = async (req, res, next) => {
+const getContactById = async (req, res, next) => {
   try {
     // Extract the ID from the URL parameters
     const id = req.params.id;
     // Retrieve the contact matching the requested ID.
-    const data = await contactsModel.getContactById(id);
+    const data = await contactsModel.getContactByIdM(id);
 
     // Send the contact with a successful HTTP response.
     res.status(200).json(data);
@@ -36,7 +36,7 @@ const getDataById = async (req, res, next) => {
 // POST - create a new contact
 // Receives HTTP request, validates it, and turns request data
 // into the contact object that the model should work with.
-const createData = async (req, res, next) => {
+const createContact = async (req, res, next) => {
   try {
     // Destructure the required fields from the request body
     // Shorthand for: const firstName = req.body.firstName; etc. etc.
@@ -62,7 +62,7 @@ const createData = async (req, res, next) => {
 
     // Passes the validated contact object to the model.
     // Waits for MongoDB to create a new contact, then stores the returned ID.
-    const contactId = await contactsModel.createContact(contact);
+    const contactId = await contactsModel.createContactM(contact);
 
     // Responds with:
     // 201 Created status,
@@ -81,7 +81,7 @@ const createData = async (req, res, next) => {
 
 
 // PUT - update an existing contact
-const updateData = async (req, res, next) => {
+const updateContact = async (req, res, next) => {
   try {
     // Get the contact ID from the URL parameters.
     const id = req.params.id;
@@ -90,7 +90,7 @@ const updateData = async (req, res, next) => {
     const contact = req.body;
 
     // Pass the ID and updated data to the model to update MongoDB.
-    await contactsModel.updateContact(id, contact);
+    await contactsModel.updateContactM(id, contact);
 
     // Send a successful response with no response body.
     res.status(204).send();
@@ -101,13 +101,13 @@ const updateData = async (req, res, next) => {
 };
 
 // DELETE - delete an existing contact
-const deleteData = async (req, res, next) => {
+const deleteContact = async (req, res, next) => {
   try {
     // Get the contact ID from the URL parameters.
     const id = req.params.id;
 
     // Pass the ID to the model to delete the contact from MongoDB.
-    await contactsModel.deleteContact(id);
+    await contactsModel.deleteContactM(id);
 
     // Send a successful 200 response with a JSON object indicating deletion.
     res.status(200).json({
@@ -121,9 +121,9 @@ const deleteData = async (req, res, next) => {
 
 // Export CRUD functions.
 module.exports = {
-  getData,
-  getDataById,
-  createData,
-  updateData,
-  deleteData
+  getAllContacts,
+  getContactById,
+  createContact,
+  updateContact,
+  deleteContact
 };

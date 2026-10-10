@@ -11,6 +11,9 @@ const mongodb = require('./db/connect');
 // Import the 'configured' router to handle requests into /contacts endpoint.
 const contactsRoutes = require('./routes/contacts');
 
+// Import the Swagger documentation router.
+const swaggerRoutes = require('./routes/swagger');
+
 // Creates the Express application through the express() function.
 const app = express();
 
@@ -20,6 +23,9 @@ const app = express();
 // Express puts the resulting JS object on req.body,
 // JS code can now work with req.body
 app.use(express.json());
+
+// Mount the Swagger routes at the /api-docs endpoint.
+app.use('/api-docs', swaggerRoutes);
 
 // Route mounting: 
 // Requests beginning with /contacts are handled by contactsRoutes

@@ -20,26 +20,31 @@ const router = express.Router();
 // =======================================================================
 
 // Defines a GET route:
-// GET requests to /contacts, run getData() function from contactsController
-router.get('/', contactsController.getData);
+// GET requests to /contacts, run getAllContacts() function from contactsController
+router.get('/', contactsController.getAllContacts
+    /* #swagger.description = 'Retrieves a list of all contacts in the database.' */);
 
 // Defines a Get route:
-// GET requests to /contacts/:id, run getDataById() function from contactsController
+// GET requests to /contacts/:id, run getContactById() function from contactsController
 // In server.js - app.use('/contacts', contactsRoutes) + router.get('/:id'...) =
 // GET /contacts/:id
-router.get('/:id', contactsController.getDataById);
+router.get('/:id', contactsController.getContactById
+    /* #swagger.description = 'Retrieves a specific contact by their ID.' */);
 
 // Defines a POST route:
-// Creates a new contact, runs createData() function from contactsController
-router.post('/', contactsController.createData);
+// Creates a new contact, runs createContact() function from contactsController
+router.post('/', contactsController.createContact
+    /* #swagger.description = 'Creates a new contact in the database.' */);
 
 // Defines a PUT route:
-// Updates an existing contact, runs updateData() function from contactsController
-router.put('/:id', contactsController.updateData);
+// Updates an existing contact, runs updateContact() function from contactsController
+router.put('/:id', contactsController.updateContact
+    /* #swagger.description = 'Updates an existing contact in the database.' */);
 
 // Defines a DELETE route:
-// Deletes an existing contact, runs deleteData() function from contactsController
-router.delete('/:id', contactsController.deleteData);
+// Deletes an existing contact, runs deleteContact() function from contactsController
+router.delete('/:id', contactsController.deleteContact
+    /* #swagger.description = 'Deletes an existing contact from the database.' */);
 
 // Export the router object
 module.exports = router;

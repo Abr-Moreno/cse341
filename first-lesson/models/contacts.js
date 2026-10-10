@@ -1,6 +1,8 @@
 // MAIN IDEA:
 // ==========
 // How does my app access and manipulate data in the db?
+//
+// Names of functions in this file include the letter "M" to indicate "Model" functions.
 // =====================================================
 
 // Import MongoDB connection module.
@@ -9,7 +11,7 @@ const mongoDb = require('../db/connect');
 // Import ObjectId so we can convert a URL ID into MongoDB's ID type.
 const { ObjectId } = require('mongodb');
 
-const getContacts = async () => {
+const getAllContactsM = async () => {
   // Gets the MongoDB client established in connect.js
   const client = mongoDb.getClient();
 
@@ -24,7 +26,7 @@ const getContacts = async () => {
   return collection;
 };
 
-const getContactById = async (id) => {
+const getContactByIdM = async (id) => {
   // Gets the MongoDB client established in connect.js
   const client = mongoDb.getClient();
   // Selects the contactDb database and its contacts collection.
@@ -38,7 +40,7 @@ const getContactById = async (id) => {
 };
 
 // POST: Create a new contact in the database.
-const createContact = async (contact) => {
+const createContactM = async (contact) => {
   // Get the existing MongoDB client connection.
   const client = mongoDb.getClient();
 
@@ -55,7 +57,7 @@ const createContact = async (contact) => {
 
 
 // PUT: Update an existing contact in the database.
-const updateContact = async (id, contact) => {
+const updateContactM = async (id, contact) => {
   // Get the existing MongoDB client connection.
   const client = mongoDb.getClient();
 
@@ -75,7 +77,7 @@ const updateContact = async (id, contact) => {
 
 
 // DELETE: Delete a contact from the database.
-const deleteContact = async (id) => {
+const deleteContactM = async (id) => {
   // Get the existing MongoDB client connection.
   const client = mongoDb.getClient();
 
@@ -90,9 +92,9 @@ const deleteContact = async (id) => {
 };
 
 module.exports = {
-  getContacts,
-  getContactById,
-  createContact,
-  updateContact,
-  deleteContact
+  getAllContacts: getAllContactsM,
+  getContactById: getContactByIdM,
+  createContact: createContactM,
+  updateContact: updateContactM,
+  deleteContact: deleteContactM
 };
