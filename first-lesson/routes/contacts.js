@@ -22,9 +22,9 @@ const router = express.Router();
 // Defines a GET route:
 // GET requests to /contacts, run getAllContacts() function from contactsController
 router.get('/', contactsController.getAllContacts
-    /* #swagger.description = 'Retrieves a list of all contacts in the database.'
+    /* #swagger.description = 'Retrieves a list of all contacts from the database.'
        #swagger.responses[200] = {
-         description: 'List of contacts.',
+         description: 'Returns a list of contacts.',
          schema: [{ $ref: '#/definitions/Contact' }]
          } */);
 
@@ -35,7 +35,7 @@ router.get('/', contactsController.getAllContacts
 router.get('/:id', contactsController.getContactById
     /* #swagger.description = 'Retrieves a specific contact by their ID.'
        #swagger.responses[200] = {
-         description: 'A single contact.',
+         description: 'Returns a single contact.',
          schema: { $ref: '#/definitions/Contact' }
          } */);
 
