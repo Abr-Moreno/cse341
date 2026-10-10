@@ -24,6 +24,16 @@ const doc = {
   // Use hostname and protocol for current deployed environment.
   host: serverUrl.host,
   schemes: [serverUrl.protocol.replace(':', '')],
+  definitions: {
+    // Define the Contact model for the OpenAPI specification.
+    Contact: {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'jd@example.com',
+      favoriteColor: 'blue',
+      birthday: '1990-01-01',
+    }
+  }
 };
 
 // Where the generated OpenAPI specification will be saved.

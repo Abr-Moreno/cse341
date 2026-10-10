@@ -26,7 +26,16 @@
         "description": "Retrieves a list of all contacts in the database.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "List of contacts.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Contact"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
@@ -36,25 +45,9 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "favoriteColor": {
-                  "example": "any"
-                },
-                "birthday": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Contact"
             }
           }
         ],
@@ -81,7 +74,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "A single contact.",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
           }
         }
       },
@@ -97,25 +93,9 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "example": "any"
-                },
-                "lastName": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "favoriteColor": {
-                  "example": "any"
-                },
-                "birthday": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Contact"
             }
           }
         ],
@@ -142,6 +122,33 @@
           "200": {
             "description": "OK"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "jd@example.com"
+        },
+        "favoriteColor": {
+          "type": "string",
+          "example": "blue"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "1990-01-01"
         }
       }
     }
