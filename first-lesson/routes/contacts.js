@@ -39,7 +39,19 @@ router.post('/', contactsController.createContact
 // Defines a PUT route:
 // Updates an existing contact, runs updateContact() function from contactsController
 router.put('/:id', contactsController.updateContact
-    /* #swagger.description = 'Updates an existing contact in the database.' */);
+    /* #swagger.description = 'Updates an existing contact in the database.'
+    #swagger.parameters['body'] = {
+    in: 'body',
+    required: true,
+    schema: {
+      firstName: 'Jane',
+      lastName: 'Doe',
+      email: 'jane@example.com',
+      favoriteColor: 'Blue',
+      birthday: '1995-06-15'
+    }
+  }
+*/);
 
 // Defines a DELETE route:
 // Deletes an existing contact, runs deleteContact() function from contactsController
