@@ -1,0 +1,183 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Contacts API",
+    "description": "API for Contacts project",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api-docs/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/entries/": {
+      "get": {
+        "description": "Retrieves all journal entries from the database.",
+        "responses": {
+          "200": {
+            "description": "Returns a list of journal entries.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/JournalEntry"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new journal entry.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JournalEntry"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Journal entry created successfully."
+          },
+          "400": {
+            "description": "Invalid journal entry data."
+          }
+        }
+      }
+    },
+    "/entries/{id}": {
+      "get": {
+        "description": "Retrieves a specific journal entry by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a single journal entry.",
+            "schema": {
+              "$ref": "#/definitions/JournalEntry"
+            }
+          },
+          "404": {
+            "description": "Journal entry not found."
+          }
+        }
+      },
+      "put": {
+        "description": "Updates an existing journal entry by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/JournalEntry"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Journal entry updated successfully."
+          },
+          "400": {
+            "description": "Invalid journal entry data."
+          },
+          "404": {
+            "description": "Journal entry not found."
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a journal entry by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete request processed."
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "JournalEntry": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "A meaningful day"
+        },
+        "entry": {
+          "type": "string",
+          "example": "Today I spent time with my family and reflected on the day."
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2026-10-16T22:00:00.000Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2026-10-16T22:00:00.000Z"
+        },
+        "isEdited": {
+          "type": "boolean",
+          "example": false
+        },
+        "location": {
+          "type": "string",
+          "example": "Amsterdam, Netherlands"
+        },
+        "gratitudeTags": {
+          "type": "array",
+          "example": [
+            "family",
+            "gratitude"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "userId": {
+          "type": "string",
+          "example": "test-user-001"
+        }
+      }
+    }
+  }
+}
