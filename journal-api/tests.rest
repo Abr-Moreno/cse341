@@ -1,0 +1,61 @@
+### LOCAL - Get ALL entries
+GET http://localhost:3000/entries
+
+### LOCAL - Get entry by ID
+GET http://localhost:3000/entries/ENTRY-ID-HERE
+
+### LOCAL - POST - Creates an entry
+POST http://localhost:3000/entries
+Content-Type: application/json
+
+{
+  "title": "Peaceful Day",
+  "entry": "Today was a good day.",
+  "location": null,
+  "gratitudeTags": ["reflection"]
+}
+
+### LOCAL - PUT - Updates an entry
+PUT http://localhost:3000/entries/ENTRY-ID-HERE
+Content-Type: application/json
+
+{
+  "title": "Peaceful Day - updated",
+  "entry": "Today was a good day. I love my dog.",
+  "location": "Provo, Utah",
+  "gratitudeTags": ["reflection", "dog"]
+}
+
+### LOCAL - DELETE - Deletes an entry
+DELETE http://localhost:3000/entries/ENTRY-ID-HERE
+
+### LIVE - Get ALL entries
+GET https://journal-api-xf1v.onrender.com/entries
+
+### LIVE - Get entry by ID
+GET https://journal-api-xf1v.onrender.com/entries/ENTRY-ID-HERE
+
+### LIVE - POST - Creates an entry
+POST https://journal-api-xf1v.onrender.com/entries
+Content-Type: application/json
+
+{
+  "title": "Bought a new car!",
+  "entry": "I bought a new car today!",
+  "location": null,
+  "gratitudeTags": ["wheels"]
+}
+
+### LIVE - PUT - Updates a contact
+PUT https://journal-api-xf1v.onrender.com/entries/ENTRY-ID-HERE
+Content-Type: application/json
+
+{
+  "title": "Bought a new car! - Updated",
+  "entry": "I bought a new car today! I love to race!",
+  "location": "Ogden, Utah",
+  "gratitudeTags": ["wheels", "money"]
+}
+
+### LIVE - DELETE - Deletes an entry
+DELETE https://journal-api-xf1v.onrender.com/entries/ENTRY-ID-HERE

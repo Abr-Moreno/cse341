@@ -13,6 +13,22 @@ const entriesModel = require('../models/entries');
 // TEMPORARY: user id for testing.
 const TEST_USER_ID = 'test-user-001';
 
+// HELPER FUNCTION:
+// Creates the current date and time as M/D/YYYY h:mm AM/PM.
+const dateTime = () => {
+  // New date object.
+  const now = new Date();
+
+  // Returns a string
+  return now.toLocaleString('en-US', {
+    month: 'numeric',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+  });
+};
+
 // GET all journal entries.
 const getAllEntries = async (req, res, next) => {
   try {
@@ -89,16 +105,13 @@ const createEntry = async (req, res, next) => {
       });
     }
 
-    // Generates timestamps on the server.
-    const now = new Date();
-
     // Build the journal entry document.
     // Server-controlled fields are not accepted from the request body.
     const newEntry = {
       title: title.trim(),
       entry: entry.trim(),
-      createdAt: now,
-      updatedAt: now,
+      createdAt: dateTime(),
+      updatedAt: dateTime(),
       isEdited: false,
       location: location ?? null,
       gratitudeTags: gratitudeTags ?? [],
@@ -179,7 +192,7 @@ const updateEntry = async (req, res, next) => {
       title: title.trim(),
       entry: entry.trim(),
       createdAt: existingEntry.createdAt,
-      updatedAt: new Date(),
+      updatedAt: dateTime(),
       isEdited: true,
       location: location ?? null,
       gratitudeTags: gratitudeTags ?? [],

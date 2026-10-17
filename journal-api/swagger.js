@@ -37,8 +37,8 @@ const doc = {
     JournalEntry: {
       title: 'A meaningful day',
       entry: 'Today I spent time with my family and reflected on the day.',
-      createdAt: '2026-10-16T22:00:00.000Z',
-      updatedAt: '2026-10-16T22:00:00.000Z',
+      createdAt: '10/17/2026, 3:02 PM',
+      updatedAt: '10/17/2026, 3:02 PM',
       isEdited: false,
       location: 'Amsterdam, Netherlands',
       gratitudeTags: ['family', 'gratitude'],

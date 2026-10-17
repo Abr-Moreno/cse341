@@ -149,11 +149,11 @@
         },
         "createdAt": {
           "type": "string",
-          "example": "2026-10-16T22:00:00.000Z"
+          "example": "10/17/2026, 3:02 PM"
         },
         "updatedAt": {
           "type": "string",
-          "example": "2026-10-16T22:00:00.000Z"
+          "example": "10/17/2026, 3:02 PM"
         },
         "isEdited": {
           "type": "boolean",
