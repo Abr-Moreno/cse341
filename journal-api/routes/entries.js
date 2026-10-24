@@ -5,12 +5,18 @@ MAIN IDEA:
   router so server.js can mount and use it under /entries.
 - Router will route requests to the corresponding controller functions:
   Get, Get by ID, Post, Put, Delete.
+- Express will run validateid and validateEntry first, then the controller 
+  only if validation succeeds. 
+- If validation fails, sends 400 response and the controller never runs.
 =====================================================================
 =====================================================================*/
 
 // Needed to create a router
 const express = require('express');
-
+// Joi validation for URL id parameter
+const validateId = require('../middleware/validateId');
+// Joi validation for incoming request bodies - POST & PUT
+const validateEntry = require('../middleware/validateEntry');
 // Access to controllers/entries.js file:
 const entriesController = require('../controllers/entries');
 
@@ -27,59 +33,86 @@ const router = express.Router();
 router.get('/', entriesController.getAllEntries
   /* #swagger.description = 'Retrieves all journal entries from the database.'
      #swagger.responses[200] = {
-       description: 'Returns a list of journal entries.',
+       description: 'Returns an array of journal entries.',
        schema: [{ $ref: '#/definitions/JournalEntry' }]
-      } */);
+     }
+     #swagger.responses[500] = {
+       description: 'Internal server error.'
+     } */);
 
 // GET a single journal entry by ID
-router.get('/:id', entriesController.getEntryById
+router.get('/:id', validateId, entriesController.getEntryById
   /* #swagger.description = 'Retrieves a specific journal entry by its ID.'
      #swagger.responses[200] = {
-       description: 'Returns a single journal entry.',
+       description: 'Returns the requested journal entry.',
        schema: { $ref: '#/definitions/JournalEntry' }
+     }
+     #swagger.responses[400] = {
+       description: 'Invalid journal entry ID.'
      }
      #swagger.responses[404] = {
        description: 'Journal entry not found.'
+     }
+     #swagger.responses[500] = {
+       description: 'Internal server error.'
      } */);
 
 // POST a new journal entry
-router.post('/', entriesController.createEntry
+// Validates user input data using Joi
+router.post('/', validateEntry, entriesController.createEntry
   /* #swagger.description = 'Creates a new journal entry.'
      #swagger.parameters['body'] = {
        in: 'body',
        required: true,
-       schema: { $ref: '#/definitions/JournalEntry' }
+       schema: { $ref: '#/definitions/JournalEntryInput' }
      }
      #swagger.responses[201] = {
        description: 'Journal entry created successfully.'
      }
      #swagger.responses[400] = {
        description: 'Invalid journal entry data.'
+     }
+     #swagger.responses[500] = {
+       description: 'Internal server error.'
      } */);
 
 // PUT (update) an existing journal entry by ID
-router.put('/:id', entriesController.updateEntry
-  /* #swagger.description = 'Updates an existing journal entry by its ID.'
+// Validates user input data using Joi
+router.put('/:id', validateId, validateEntry, entriesController.updateEntry
+/* #swagger.description = 'Updates an existing journal entry.'
      #swagger.parameters['body'] = {
        in: 'body',
        required: true,
-       schema: { $ref: '#/definitions/JournalEntry' }
+       schema: { $ref: '#/definitions/JournalEntryInput' }
      }
      #swagger.responses[204] = {
-       description: 'Journal entry updated successfully.'
+       description: 'Journal entry updated successfully. No response body is returned.'
      }
      #swagger.responses[400] = {
-       description: 'Invalid journal entry data.'
+       description: 'Invalid journal entry ID or request body.'
      }
      #swagger.responses[404] = {
        description: 'Journal entry not found.'
+     }
+     #swagger.responses[500] = {
+       description: 'Internal server error.'
      } */);
 
+
 // DELETE a journal entry by ID
-router.delete('/:id', entriesController.deleteEntry
-  /* #swagger.description = 'Deletes a journal entry by its ID.'
+router.delete('/:id', validateId, entriesController.deleteEntry
+ /* #swagger.description = 'Deletes a journal entry by its ID.'
      #swagger.responses[200] = {
-       description: 'Delete request processed.'
+       description: 'Journal entry deleted successfully.'
+     }
+     #swagger.responses[400] = {
+       description: 'Invalid journal entry ID.'
+     }
+     #swagger.responses[404] = {
+       description: 'Journal entry not found.'
+     }
+     #swagger.responses[500] = {
+       description: 'Internal server error.'
      } */);
 
 // Export the router so it can be used in server.js

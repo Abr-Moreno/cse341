@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Contacts API",
-    "description": "API for Contacts project",
+    "title": "Journal API",
+    "description": "API for creating, retrieving, updating, and deleting journal entries",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -26,7 +26,7 @@
         "description": "Retrieves all journal entries from the database.",
         "responses": {
           "200": {
-            "description": "Returns a list of journal entries.",
+            "description": "Returns an array of journal entries.",
             "schema": {
               "type": "array",
               "items": {
@@ -36,6 +36,9 @@
                 "name": "main"
               }
             }
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       },
@@ -47,7 +50,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/JournalEntry"
+              "$ref": "#/definitions/JournalEntryInput"
             }
           }
         ],
@@ -57,6 +60,9 @@
           },
           "400": {
             "description": "Invalid journal entry data."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       }
@@ -74,18 +80,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a single journal entry.",
+            "description": "Returns the requested journal entry.",
             "schema": {
               "$ref": "#/definitions/JournalEntry"
             }
           },
+          "400": {
+            "description": "Invalid journal entry ID."
+          },
           "404": {
             "description": "Journal entry not found."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       },
       "put": {
-        "description": "Updates an existing journal entry by its ID.",
+        "description": "Updates an existing journal entry.",
         "parameters": [
           {
             "name": "id",
@@ -98,19 +110,22 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/JournalEntry"
+              "$ref": "#/definitions/JournalEntryInput"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "Journal entry updated successfully."
+            "description": "Journal entry updated successfully. No response body is returned."
           },
           "400": {
-            "description": "Invalid journal entry data."
+            "description": "Invalid journal entry ID or request body."
           },
           "404": {
             "description": "Journal entry not found."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       },
@@ -126,17 +141,23 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete request processed."
+            "description": "Journal entry deleted successfully."
+          },
+          "400": {
+            "description": "Invalid journal entry ID."
           },
           "404": {
-            "description": "Not Found"
+            "description": "Journal entry not found."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       }
     }
   },
   "definitions": {
-    "JournalEntry": {
+    "JournalEntryInput": {
       "type": "object",
       "properties": {
         "title": {
@@ -146,6 +167,37 @@
         "entry": {
           "type": "string",
           "example": "Today I spent time with my family and reflected on the day."
+        },
+        "location": {
+          "type": "string",
+          "example": "Amsterdam, Netherlands"
+        },
+        "gratitudeTags": {
+          "type": "array",
+          "example": [
+            "family",
+            "gratitude"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "JournalEntry": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "6712abc12345678901234567"
+        },
+        "title": {
+          "type": "string",
+          "example": "A meaningful day"
+        },
+        "entry": {
+          "type": "string",
+          "example": "Today I spent time with my family."
         },
         "createdAt": {
           "type": "string",

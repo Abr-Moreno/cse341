@@ -1,6 +1,11 @@
 // Express is a web framework for Node.js that simplifies the process of building web applications and APIs.
 const express = require('express');
 
+// Imports centralized error-handling middleware.
+// Logs unexpected errors for debugging. returns a generic
+// error response to client to avoid exposure of internal details.
+const errorHandler = require('./middleware/errorHandler');
+
 // Imports the database connection module.
 const mongodb = require('./db/connect');
 
@@ -24,6 +29,9 @@ app.use(express.json());
 app.use('/api-docs', swaggerRoutes);
 // Requests beginning with /entries are handled by entriesRoutes.
 app.use('/entries', entriesRoutes);
+
+// Centralized error handler.
+app.use(errorHandler);
 
 // Use the port provided by the environment, or 3000 locally.
 const PORT = process.env.PORT || 3000;

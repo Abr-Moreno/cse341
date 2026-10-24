@@ -25,18 +25,28 @@ const serverUrl = process.env.RENDER_EXTERNAL_URL
 // Describe the API
 const doc = {
   info: {
-    title: 'Contacts API',
-    description: 'API for Contacts project',
+    title: 'Journal API',
+    description: 'API for creating, retrieving, updating, and deleting journal entries',
   },
   // Use hostname and protocol for current deployed environment.
   host: serverUrl.host,
   schemes: [serverUrl.protocol.replace(':', '')],
 
-  // Define the structure of a journal entry for the documentation.
+  // Fields accepted from the client in POST & PUT requests.
+  // location and gratitudeTags can be omitted.
   definitions: {
-    JournalEntry: {
+    JournalEntryInput: {
       title: 'A meaningful day',
       entry: 'Today I spent time with my family and reflected on the day.',
+      location: 'Amsterdam, Netherlands',
+      gratitudeTags: ['family', 'gratitude'],
+    },
+
+    // Journal entry returned by GET endpoints.
+    JournalEntry: {
+      _id: '6712abc12345678901234567',
+      title: 'A meaningful day',
+      entry: 'Today I spent time with my family.',
       createdAt: '10/17/2026, 3:02 PM',
       updatedAt: '10/17/2026, 3:02 PM',
       isEdited: false,
