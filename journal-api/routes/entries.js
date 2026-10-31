@@ -1,18 +1,21 @@
 /*
 MAIN IDEA:
 ==========
-- Builds/configures an Express router, then exports that configured 
+- Builds/configures an Express router, then exports that configured
   router so server.js can mount and use it under /entries.
 - Router will route requests to the corresponding controller functions:
   Get, Get by ID, Post, Put, Delete.
-- Express will run validateid and validateEntry first, then the controller 
-  only if validation succeeds. 
+- Express will run authentication and validation first, then the controller
+  only if those checks succeed.
+- If authentication fails, the request is denied.
 - If validation fails, sends 400 response and the controller never runs.
 =====================================================================
 =====================================================================*/
 
 // Needed to create a router
 const express = require('express');
+// Auth0 middleware to require an authenticated user
+const { requiresAuth } = require('express-openid-connect');
 // Joi validation for URL id parameter
 const validateId = require('../middleware/validateId');
 // Joi validation for incoming request bodies - POST & PUT
@@ -22,6 +25,17 @@ const entriesController = require('../controllers/entries');
 
 // Create a router object to define routes
 const router = express.Router();
+
+/*
+ Authentication
+ - Protects every route defined in this router.
+ - requiresAuth() checks whether the request has an authentication session.
+ - If the user is not authenticated, the request is denied.
+ - If authenticated, Express continues to the route and its middleware. 
+
+ - Applies to all /entries endpoints without repeating requiresAuth()
+ - on every individual route. */
+router.use(requiresAuth());
 
 /*=======================================================================
 - ROUTES:
@@ -36,6 +50,9 @@ router.get('/', entriesController.getAllEntries
        description: 'Returns an array of journal entries.',
        schema: [{ $ref: '#/definitions/JournalEntry' }]
      }
+     #swagger.responses[401] = {
+       description: 'Authentication required. User must be logged in to access this endpoint.'
+     }
      #swagger.responses[500] = {
        description: 'Internal server error.'
      } */);
@@ -49,6 +66,9 @@ router.get('/:id', validateId, entriesController.getEntryById
      }
      #swagger.responses[400] = {
        description: 'Invalid journal entry ID.'
+     }
+     #swagger.responses[401] = {
+       description: 'Authentication required. User must be logged in to access this endpoint.'
      }
      #swagger.responses[404] = {
        description: 'Journal entry not found.'
@@ -72,6 +92,9 @@ router.post('/', validateEntry, entriesController.createEntry
      #swagger.responses[400] = {
        description: 'Invalid journal entry data.'
      }
+     #swagger.responses[401] = {
+       description: 'Authentication required. User must be logged in to access this endpoint.'
+     }
      #swagger.responses[500] = {
        description: 'Internal server error.'
      } */);
@@ -91,6 +114,9 @@ router.put('/:id', validateId, validateEntry, entriesController.updateEntry
      #swagger.responses[400] = {
        description: 'Invalid journal entry ID or request body.'
      }
+     #swagger.responses[401] = {
+       description: 'Authentication required. User must be logged in to access this endpoint.'
+     }
      #swagger.responses[404] = {
        description: 'Journal entry not found.'
      }
@@ -107,6 +133,9 @@ router.delete('/:id', validateId, entriesController.deleteEntry
      }
      #swagger.responses[400] = {
        description: 'Invalid journal entry ID.'
+     }
+     #swagger.responses[401] = {
+       description: 'Authentication required. User must be logged in to access this endpoint.'
      }
      #swagger.responses[404] = {
        description: 'Journal entry not found.'

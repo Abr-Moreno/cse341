@@ -37,6 +37,9 @@
               }
             }
           },
+          "401": {
+            "description": "Authentication required. User must be logged in to access this endpoint."
+          },
           "500": {
             "description": "Internal server error."
           }
@@ -60,6 +63,9 @@
           },
           "400": {
             "description": "Invalid journal entry data."
+          },
+          "401": {
+            "description": "Authentication required. User must be logged in to access this endpoint."
           },
           "500": {
             "description": "Internal server error."
@@ -87,6 +93,9 @@
           },
           "400": {
             "description": "Invalid journal entry ID."
+          },
+          "401": {
+            "description": "Authentication required. User must be logged in to access this endpoint."
           },
           "404": {
             "description": "Journal entry not found."
@@ -121,6 +130,9 @@
           "400": {
             "description": "Invalid journal entry ID or request body."
           },
+          "401": {
+            "description": "Authentication required. User must be logged in to access this endpoint."
+          },
           "404": {
             "description": "Journal entry not found."
           },
@@ -145,6 +157,9 @@
           },
           "400": {
             "description": "Invalid journal entry ID."
+          },
+          "401": {
+            "description": "Authentication required. User must be logged in to access this endpoint."
           },
           "404": {
             "description": "Journal entry not found."

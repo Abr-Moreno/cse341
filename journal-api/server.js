@@ -1,5 +1,11 @@
+require('dotenv').config();
+
 // Express is a web framework for Node.js that simplifies the process of building web applications and APIs.
 const express = require('express');
+
+// Imports Auth0 authentication middleware.
+// auth() manages login process, callback, logout, and user session.
+const { auth } = require('express-openid-connect');
 
 // Imports centralized error-handling middleware.
 // Logs unexpected errors for debugging. returns a generic
@@ -17,6 +23,27 @@ const swaggerRoutes = require('./routes/swagger');
 
 // Creates the Express application through the express() function.
 const app = express();
+
+/*
+ Auth0 authentication middleware
+
+ - Connects Express app to Auth0
+ - Automatically provides /login, /logout, and /callback routes.
+ - Maintains authenticate user's session using an encrypted cookie.
+ - Makes authentication info available through req.oidc.
+
+ - authRequired: false - authentication is not automatically 
+ - required for every route. Must protect /entries routes separately. */
+app.use(
+  auth({
+    authRequired: false,
+    auth0Logout: true,
+    secret: process.env.SECRET,
+    baseURL: process.env.BASE_URL,
+    clientID: process.env.CLIENT_ID,
+    issuerBaseURL: process.env.ISSUER_BASE_URL,
+  })
+)
 
 // Middleware to parse JSON bodies in requests:
 // req is the HTTP request object, data contained inside its body is JSON.
