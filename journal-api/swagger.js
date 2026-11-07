@@ -27,15 +27,16 @@ const doc = {
   info: {
     title: 'Journal API',
     description: `
-    API for creating, retrieving, updating, and deleting journal entries.
+    Journal API for managing personal journal entries and retrieving public journal prompts.
     
+    Journal entries:
+    Authenticated users can create, read, update, and delete their own journal entries. All /entries endpoints require an authenticated session. Users can only access and modify entries associated with their Auth0 user ID. Unauthenticated requests receive a 401 Unauthorized response.
+
+    Journal prompts:
+    The /prompts endpoint provides public access to the available journal prompts. Authentication is not required. Prompts are read-only through this API.
+
     Authentication:
-    Users must create accounts and authenticate through Auth0's hosted login.
-    The application maintains an authenticated session using:
-    express-openid-connect.
-    All /entries endpoints require an authenticated session.
-    Unauthenticated requests receive a 401 Unauthorized response.
-    Users can only access and modify their own journal entries.
+    User authentication and account management are handled through Auth0's hosted login using express-openid-connect. The application maintains an authenticated session after succssful login.
     `
   },
   // Use hostname and protocol for current deployed environment.

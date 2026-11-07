@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Journal API",
-    "description": "\n    API for creating, retrieving, updating, and deleting journal entries.\n    \n    Authentication:\n    Users must create accounts and authenticate through Auth0's hosted login.\n    The application maintains an authenticated session using:\n    express-openid-connect.\n    All /entries endpoints require an authenticated session.\n    Unauthenticated requests receive a 401 Unauthorized response.\n    Users can only access and modify their own journal entries.\n    ",
+    "description": "\n    Journal API for managing personal journal entries and retrieving public journal prompts.\n    \n    Journal entries:\n    Authenticated users can create, read, update, and delete their own journal entries. All /entries endpoints require an authenticated session. Users can only access and modify entries associated with their Auth0 user ID. Unauthenticated requests receive a 401 Unauthorized response.\n\n    Journal prompts:\n    The /prompts endpoint provides public access to the available journal prompts. Authentication is not required. Prompts are read-only through this API.\n\n    Authentication:\n    User authentication and account management are handled through Auth0's hosted login using express-openid-connect. The application maintains an authenticated session after succssful login.\n    ",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
