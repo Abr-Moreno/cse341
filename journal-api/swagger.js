@@ -26,7 +26,17 @@ const serverUrl = process.env.RENDER_EXTERNAL_URL
 const doc = {
   info: {
     title: 'Journal API',
-    description: 'API for creating, retrieving, updating, and deleting journal entries',
+    description: `
+    API for creating, retrieving, updating, and deleting journal entries.
+    
+    Authentication:
+    Users must create accounts and authenticate through Auth0's hosted login.
+    The application maintains an authenticated session using:
+    express-openid-connect.
+    All /entries endpoints require an authenticated session.
+    Unauthenticated requests receive a 401 Unauthorized response.
+    Users can only access and modify their own journal entries.
+    `
   },
   // Use hostname and protocol for current deployed environment.
   host: serverUrl.host,
@@ -52,7 +62,24 @@ const doc = {
       isEdited: false,
       location: 'Amsterdam, Netherlands',
       gratitudeTags: ['family', 'gratitude'],
-      userId: 'test-user-001'
+      userId: 'auth0|abc123xyz'
+    },
+
+    // Response returned after creating a new journal entry.
+    CreateEntryResponse: {
+      entryCreated: true,
+      id: '6712abc12345678901234567'
+    },
+
+    // Response returned after deleting a journal entry.
+    DeleteEntryResponse: {
+      entryDeleted: true
+    },
+
+    // Journal prompt returned by GET endpoint.
+    JournalPrompt: {
+      id: '6712abc12345678901234567',
+      prompt: 'What is one thing you are grateful for today?'
     }
   }
 };

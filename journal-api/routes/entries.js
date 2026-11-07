@@ -22,6 +22,8 @@ const validateId = require('../middleware/validateId');
 const validateEntry = require('../middleware/validateEntry');
 // Access to controllers/entries.js file:
 const entriesController = require('../controllers/entries');
+// Middleware to attach the authenticated user's ID to the request object
+const attachUserId = require('../middleware/attachUserId');
 
 // Create a router object to define routes
 const router = express.Router();
@@ -34,8 +36,11 @@ const router = express.Router();
  - If authenticated, Express continues to the route and its middleware. 
 
  - Applies to all /entries endpoints without repeating requiresAuth()
- - on every individual route. */
-router.use(requiresAuth());
+ - on every individual route.
+ - 
+ - attachUserId middleware extracts authenticated user's ID from the request 
+ - object and attaches it to req.userId for controller to use. */
+router.use(requiresAuth(), attachUserId);
 
 /*=======================================================================
 - ROUTES:
@@ -45,7 +50,7 @@ router.use(requiresAuth());
 
 // GET all journal entries
 router.get('/', entriesController.getAllEntries
-  /* #swagger.description = 'Retrieves all journal entries from the database.'
+  /* #swagger.description = 'Retrieves all journal entries belonging to the authenticated user.'
      #swagger.responses[200] = {
        description: 'Returns an array of journal entries.',
        schema: [{ $ref: '#/definitions/JournalEntry' }]
@@ -59,7 +64,7 @@ router.get('/', entriesController.getAllEntries
 
 // GET a single journal entry by ID
 router.get('/:id', validateId, entriesController.getEntryById
-  /* #swagger.description = 'Retrieves a specific journal entry by its ID.'
+  /* #swagger.description = 'Retrieves a journal entry by ID, if it belongs to the authenticated user.'
      #swagger.responses[200] = {
        description: 'Returns the requested journal entry.',
        schema: { $ref: '#/definitions/JournalEntry' }
@@ -80,14 +85,15 @@ router.get('/:id', validateId, entriesController.getEntryById
 // POST a new journal entry
 // Validates user input data using Joi
 router.post('/', validateEntry, entriesController.createEntry
-  /* #swagger.description = 'Creates a new journal entry.'
+  /* #swagger.description = 'Creates a new journal entry owned by the authenticated user.'
      #swagger.parameters['body'] = {
        in: 'body',
        required: true,
        schema: { $ref: '#/definitions/JournalEntryInput' }
      }
      #swagger.responses[201] = {
-       description: 'Journal entry created successfully.'
+       description: 'Journal entry created successfully.',
+       schema: { $ref: '#/definitions/CreateEntryResponse' }
      }
      #swagger.responses[400] = {
        description: 'Invalid journal entry data.'
@@ -102,7 +108,7 @@ router.post('/', validateEntry, entriesController.createEntry
 // PUT (update) an existing journal entry by ID
 // Validates user input data using Joi
 router.put('/:id', validateId, validateEntry, entriesController.updateEntry
-/* #swagger.description = 'Updates an existing journal entry.'
+/* #swagger.description = 'Updates an existing journal entry belonging to the authenticated user.'
      #swagger.parameters['body'] = {
        in: 'body',
        required: true,
@@ -127,9 +133,10 @@ router.put('/:id', validateId, validateEntry, entriesController.updateEntry
 
 // DELETE a journal entry by ID
 router.delete('/:id', validateId, entriesController.deleteEntry
- /* #swagger.description = 'Deletes a journal entry by its ID.'
+ /* #swagger.description = 'Deletes a journal entry, by ID, belonging to the authenticated user.'
      #swagger.responses[200] = {
-       description: 'Journal entry deleted successfully.'
+       description: 'Journal entry deleted successfully.',
+       schema: { $ref: '#/definitions/DeleteEntryResponse' }
      }
      #swagger.responses[400] = {
        description: 'Invalid journal entry ID.'

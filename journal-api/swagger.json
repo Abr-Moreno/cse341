@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Journal API",
-    "description": "API for creating, retrieving, updating, and deleting journal entries",
+    "description": "\n    API for creating, retrieving, updating, and deleting journal entries.\n    \n    Authentication:\n    Users must create accounts and authenticate through Auth0's hosted login.\n    The application maintains an authenticated session using:\n    express-openid-connect.\n    All /entries endpoints require an authenticated session.\n    Unauthenticated requests receive a 401 Unauthorized response.\n    Users can only access and modify their own journal entries.\n    ",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -23,7 +23,7 @@
     },
     "/entries/": {
       "get": {
-        "description": "Retrieves all journal entries from the database.",
+        "description": "Retrieves all journal entries belonging to the authenticated user.",
         "responses": {
           "200": {
             "description": "Returns an array of journal entries.",
@@ -46,7 +46,7 @@
         }
       },
       "post": {
-        "description": "Creates a new journal entry.",
+        "description": "Creates a new journal entry owned by the authenticated user.",
         "parameters": [
           {
             "name": "body",
@@ -59,7 +59,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Journal entry created successfully."
+            "description": "Journal entry created successfully.",
+            "schema": {
+              "$ref": "#/definitions/CreateEntryResponse"
+            }
           },
           "400": {
             "description": "Invalid journal entry data."
@@ -75,7 +78,7 @@
     },
     "/entries/{id}": {
       "get": {
-        "description": "Retrieves a specific journal entry by its ID.",
+        "description": "Retrieves a journal entry by ID, if it belongs to the authenticated user.",
         "parameters": [
           {
             "name": "id",
@@ -106,7 +109,7 @@
         }
       },
       "put": {
-        "description": "Updates an existing journal entry.",
+        "description": "Updates an existing journal entry belonging to the authenticated user.",
         "parameters": [
           {
             "name": "id",
@@ -142,7 +145,7 @@
         }
       },
       "delete": {
-        "description": "Deletes a journal entry by its ID.",
+        "description": "Deletes a journal entry, by ID, belonging to the authenticated user.",
         "parameters": [
           {
             "name": "id",
@@ -153,7 +156,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Journal entry deleted successfully."
+            "description": "Journal entry deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/DeleteEntryResponse"
+            }
           },
           "400": {
             "description": "Invalid journal entry ID."
@@ -163,6 +169,28 @@
           },
           "404": {
             "description": "Journal entry not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/prompts/": {
+      "get": {
+        "description": "Retrieves all journal prompts.",
+        "responses": {
+          "200": {
+            "description": "Returns an array of journal prompts.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/JournalPrompt"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "500": {
             "description": "Internal server error."
@@ -242,7 +270,42 @@
         },
         "userId": {
           "type": "string",
-          "example": "test-user-001"
+          "example": "auth0|abc123xyz"
+        }
+      }
+    },
+    "CreateEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryCreated": {
+          "type": "boolean",
+          "example": true
+        },
+        "id": {
+          "type": "string",
+          "example": "6712abc12345678901234567"
+        }
+      }
+    },
+    "DeleteEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entryDeleted": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "JournalPrompt": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6712abc12345678901234567"
+        },
+        "prompt": {
+          "type": "string",
+          "example": "What is one thing you are grateful for today?"
         }
       }
     }

@@ -17,6 +17,9 @@ const mongodb = require('./db/connect');
 // Imports the 'configured' router to handle requests into /entries endpoint.
 const entriesRoutes = require('./routes/entries');
 
+// Imports the configured prompts router to handle requests on /prompts endpoint.
+const promptsRoutes = require('./routes/prompts');
+
 // Imports the Swagger documentation router.
 const swaggerRoutes = require('./routes/swagger');
 
@@ -34,10 +37,15 @@ app.use(authMiddleware);
 // JS code can now work with req.body
 app.use(express.json());
 
+/* =============
+Routes
+==============*/
 // Mount Swagger routes at the /api-docs endpoint.
 app.use('/api-docs', swaggerRoutes);
 // Requests beginning with /entries are handled by entriesRoutes.
 app.use('/entries', entriesRoutes);
+// Requests beginning with /prompts are handled by promptsRoutes.
+app.use('/prompts', promptsRoutes);
 
 // Centralized error handler.
 app.use(errorHandler);

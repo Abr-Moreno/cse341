@@ -12,9 +12,6 @@ MAIN IDEA:
 // Import journal entry data access functions from the entries model.
 const entriesModel = require('../models/entries');
 
-// TEMPORARY: user id for testing.
-const TEST_USER_ID = 'test-user-001';
-
 // HELPER FUNCTION:
 // Creates the current date and time as M/D/YYYY h:mm AM/PM.
 const dateTime = () => {
@@ -34,8 +31,10 @@ const dateTime = () => {
 // GET all journal entries.
 const getAllEntries = async (req, res, next) => {
   try {
-    // Retrieve all journal entries from MongoDB.
-    const data = await entriesModel.getAllEntriesM();
+    // Retrieve all journal entries from MongoDB using 
+    // model function.
+    // Pass the authenticated user's ID to the model.
+    const data = await entriesModel.getAllEntriesM(req.userId);
 
     // Send the entries with a successful HTTP response.
     res.status(200).json(data);
@@ -52,8 +51,9 @@ const getEntryById = async (req, res, next) => {
     // At this point, id has been validated by middleware.
     const id = req.params.id;
 
-    // Retrieve the entry matching the requested ID.
-    const entry = await entriesModel.getEntryByIdM(id);
+    // Retrieve the entry matching the requested ID and 
+    // authenticated user's ID from MongoDB using model function.
+    const entry = await entriesModel.getEntryByIdM(id, req.userId);
 
     // If entry does not exist, return code 404 (Not Found).
     if (!entry) {
@@ -73,7 +73,7 @@ const getEntryById = async (req, res, next) => {
 
 // POST: Create a new journal entry.
 // Apply server-controlled fields:
-// generate timestamps, initialize isEdited, and assign the test user ID.
+// generate timestamps, initialize isEdited, and assign the authenticated user ID.
 // Create the document: send the prepared object to the model.
 const createEntry = async (req, res, next) => {
   try {
@@ -91,7 +91,7 @@ const createEntry = async (req, res, next) => {
       isEdited: false,
       location: location ?? null,
       gratitudeTags: gratitudeTags ?? [],
-      userId: TEST_USER_ID
+      userId: req.userId // Retrieves user's ID from req object.
     };
 
     // Ask the model to insert the new entry into MongoDB.
@@ -119,7 +119,8 @@ const updateEntry = async (req, res, next) => {
     const { title, entry, location, gratitudeTags } = req.body;
 
     // Retrieve the existing entry so we can preserve fields.
-    const existingEntry = await entriesModel.getEntryByIdM(id);
+    // Uses authenticated user's ID (req.userId) in model function.
+    const existingEntry = await entriesModel.getEntryByIdM(id, req.userId);
 
     // Kept in controller bc it's a resource-existence check, 
     // not a request-body validation.
@@ -143,7 +144,14 @@ const updateEntry = async (req, res, next) => {
     };
 
     // Replace the existing entry in MongoDB.
-    await entriesModel.updateEntryM(id, updatedEntry);
+    const result = await entriesModel.updateEntryM(id, req.userId, updatedEntry);
+
+    // Verify replacement actually matched a document.
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        error: 'Journal entry not found.'
+      });
+    }
 
     // Send a successful response with no response body.
     res.status(204).send();
@@ -161,7 +169,7 @@ const deleteEntry = async (req, res, next) => {
 
     // Ask the model to delete the entry from MongoDB.
     // result object is returned from the model.
-    const result = await entriesModel.deleteEntryM(id);
+    const result = await entriesModel.deleteEntryM(id, req.userId);
 
     // deletedCount is a result property, should be 1 if successful.
     if (result.deletedCount === 0) {
